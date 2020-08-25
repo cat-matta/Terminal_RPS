@@ -1,13 +1,8 @@
 import secrets #for the really good random generator
 import sys #for exiting out
 
-def convert_num_to_string(number): #converting the number 
-	if number == 0: #looks like boulder
-		return "r"
-	elif number == 1: #looks like paper
-		return "p"
-	elif number == 2: #looks like inverted s
-		return "s"
+def pc_attack(rand_num,arr): #converting the number 
+	return arr[rand_num]
 
 def match(player,pc): #true means that you get the point, false is pc
 	if player == "r":
@@ -38,6 +33,7 @@ def convert_to_word(letter): #just for the fun of it
 def play_game():
 	player_score=0
 	pc_score=0
+	choices=["r","p","s"]
 	rounds=input("Let's begin, shall we? How many rounds you want to play?\n")
 	try: # check to see if someone input a string, roast them bc why not
 		rounds=int(rounds) 
@@ -50,14 +46,17 @@ def play_game():
 	player_choice="NU"#for null, just to initialize
 	print("\nFirst to win ",rounds_to_win," rounds wins the game\n")
 	while(True):
-		pc_choice=convert_num_to_string(secrets.randbelow(101)%3) # generates 0 1 2 in a truly random fashion
+		pc_choice=secrets.randbelow(101)%3 # generates 0 1 2 in a truly random fashion
+		pc_choice=pc_attack(pc_choice,choices)
 		oplayer_choice=input("Input your move: ")
 		player_choice=oplayer_choice.lower() #to make it not matter whether user puts in uppercase or lowercase
 		if(player_choice == "q"):
 			print("Game exited")
 			break
 		print("\nRock -- Paper -- Scissors -- Says -- Shoot\n")
-		print("\nI played: ",convert_to_word(pc_choice),"\tYou played: ",convert_to_word(player_choice),"\n")
+		pc_word=convert_to_word(pc_choice)
+		player_word=convert_to_word(player_choice)
+		print(f"\nI played: {pc_word}\tYou played: {player_word}\n")
 		if(pc_choice == player_choice):
 			print("\t\tTie round\n")
 		elif(pc_choice is not player_choice):
@@ -81,7 +80,7 @@ def play_game():
 
 
 
-print("\nTo play, simply choose: (R)ock \t(P)apper \t or (S)cissors\n")
+print("\nTo play, simply choose: (R)ock \t(P)apper or (S)cissors\n")
 print("Entering uppercase is optional\nPress q at anytime to exit\n")
 print("Are you ready to play? (Y) (N) \t")
 #choice="NU"
